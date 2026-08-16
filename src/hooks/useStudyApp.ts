@@ -3,15 +3,15 @@ import type { Subject, StudyLog, Task, QuizResult, ChapterStatus } from '../type
 import { INITIAL_SUBJECTS } from '../data/ncertData';
 
 const STORAGE_KEYS = {
-  SUBJECTS: 'study_tracker_subjects_v1',
-  LOGS: 'study_tracker_logs_v1',
-  TASKS: 'study_tracker_tasks_v1',
-  QUIZ_RESULTS: 'study_tracker_quiz_results_v1',
-  LAST_ACTIVE_DATE: 'study_tracker_last_active_date_v1',
-  STREAK_COUNT: 'study_tracker_streak_count_v1',
+  SUBJECTS: 'study_tracker_subjects_v2',
+  LOGS: 'study_tracker_logs_v2',
+  TASKS: 'study_tracker_tasks_v2',
+  QUIZ_RESULTS: 'study_tracker_quiz_results_v2',
+  LAST_ACTIVE_DATE: 'study_tracker_last_active_date_v2',
+  STREAK_COUNT: 'study_tracker_streak_count_v2',
 };
 
-const DEFAULT_INITIAL_TASKS: Task[] = [
+const DEFAULT_CLEAN_TASKS: Task[] = [
   {
     id: 'task-1',
     title: 'Complete "Orienting Yourself: Coordinates" in Ganita Manjari',
@@ -39,7 +39,7 @@ const DEFAULT_INITIAL_TASKS: Task[] = [
 ];
 
 export function useStudyApp() {
-  // 1. Subjects & Chapters State
+  // 1. Subjects & Chapters State (Default all chapters Not Started)
   const [subjects, setSubjects] = useState<Subject[]>(() => {
     try {
       const saved = localStorage.getItem(STORAGE_KEYS.SUBJECTS);
@@ -52,7 +52,7 @@ export function useStudyApp() {
     return INITIAL_SUBJECTS;
   });
 
-  // 2. Study Logs State
+  // 2. Study Logs State (Default empty for fresh user start)
   const [logs, setLogs] = useState<StudyLog[]>(() => {
     try {
       const saved = localStorage.getItem(STORAGE_KEYS.LOGS);
@@ -62,28 +62,7 @@ export function useStudyApp() {
     } catch (e) {
       console.error('Failed to parse study logs', e);
     }
-    // Default initial dummy study log for demonstration if empty
-    const today = new Date().toISOString().split('T')[0];
-    return [
-      {
-        id: 'log-demo-1',
-        subjectId: 'science',
-        subjectName: 'Science',
-        durationMinutes: 25,
-        date: today,
-        timestamp: Date.now() - 3600000 * 2,
-        type: 'Pomodoro'
-      },
-      {
-        id: 'log-demo-2',
-        subjectId: 'math',
-        subjectName: 'Mathematics',
-        durationMinutes: 45,
-        date: today,
-        timestamp: Date.now() - 3600000,
-        type: 'Custom'
-      }
-    ];
+    return [];
   });
 
   // 3. Tasks State
@@ -96,7 +75,7 @@ export function useStudyApp() {
     } catch (e) {
       console.error('Failed to parse tasks', e);
     }
-    return DEFAULT_INITIAL_TASKS;
+    return DEFAULT_CLEAN_TASKS;
   });
 
   // 4. Quiz Results State
@@ -112,13 +91,13 @@ export function useStudyApp() {
     return [];
   });
 
-  // 5. Streak Counter State
+  // 5. Streak Counter State (Default 0 for new user start)
   const [streak, setStreak] = useState<number>(() => {
     try {
       const saved = localStorage.getItem(STORAGE_KEYS.STREAK_COUNT);
-      return saved ? parseInt(saved, 10) : 3; // Default 3 day streak to show active app feel
+      return saved ? parseInt(saved, 10) : 0;
     } catch {
-      return 3;
+      return 0;
     }
   });
 
@@ -143,12 +122,13 @@ export function useStudyApp() {
     localStorage.setItem(STORAGE_KEYS.STREAK_COUNT, streak.toString());
   }, [streak]);
 
-  // Daily Streak update logic on load
-  useEffect(() => {
+  // Daily Streak update logic on study log addition
+  const recordStreakActivity = () => {
     const today = new Date().toISOString().split('T')[0];
     const lastActive = localStorage.getItem(STORAGE_KEYS.LAST_ACTIVE_DATE);
 
     if (!lastActive) {
+      setStreak(1);
       localStorage.setItem(STORAGE_KEYS.LAST_ACTIVE_DATE, today);
     } else if (lastActive !== today) {
       const lastDate = new Date(lastActive);
@@ -156,20 +136,21 @@ export function useStudyApp() {
       const diffDays = Math.round((currentDate.getTime() - lastDate.getTime()) / (1000 * 3600 * 24));
 
       if (diffDays === 1) {
-        // Continuous streak
         setStreak(prev => prev + 1);
       } else if (diffDays > 1) {
-        // Streak broken
         setStreak(1);
       }
       localStorage.setItem(STORAGE_KEYS.LAST_ACTIVE_DATE, today);
+    } else if (streak === 0) {
+      setStreak(1);
     }
-  }, []);
+  };
 
   // --- ACTIONS ---
 
   // Chapter Status Update
   const updateChapterStatus = (subjectId: string, chapterId: string, status: ChapterStatus) => {
+    recordStreakActivity();
     setSubjects(prev =>
       prev.map(subj => {
         if (subj.id !== subjectId) return subj;
@@ -184,6 +165,7 @@ export function useStudyApp() {
   // Add Study Time Log
   const addStudyLog = (subjectId: string, durationMinutes: number, type: 'Pomodoro' | 'Stopwatch' | 'Custom') => {
     if (durationMinutes <= 0) return;
+    recordStreakActivity();
     const subject = subjects.find(s => s.id === subjectId);
     const subjectName = subject ? subject.name : 'General Study';
     const today = new Date().toISOString().split('T')[0];
@@ -216,6 +198,7 @@ export function useStudyApp() {
   };
 
   const toggleTask = (taskId: string) => {
+    recordStreakActivity();
     setTasks(prev =>
       prev.map(t => (t.id === taskId ? { ...t, completed: !t.completed } : t))
     );
@@ -227,6 +210,7 @@ export function useStudyApp() {
 
   // Quiz Result Recording
   const recordQuizResult = (subjectId: string, score: number, total: number) => {
+    recordStreakActivity();
     const today = new Date().toISOString().split('T')[0];
     const newResult: QuizResult = {
       id: `quiz-${Date.now()}`,
@@ -239,13 +223,13 @@ export function useStudyApp() {
     setQuizResults(prev => [newResult, ...prev]);
   };
 
-  // Reset to default NCERT state if requested
+  // Reset to default clean state zero
   const resetToDefaults = () => {
     setSubjects(INITIAL_SUBJECTS);
-    setTasks(DEFAULT_INITIAL_TASKS);
+    setTasks(DEFAULT_CLEAN_TASKS);
     setLogs([]);
     setQuizResults([]);
-    setStreak(1);
+    setStreak(0);
     localStorage.clear();
   };
 

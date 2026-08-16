@@ -51,16 +51,34 @@ export const INITIAL_SUBJECTS: Subject[] = [
     color: '#ec4899', // pink
     subCategories: ['Prose', 'Poetry', 'Supplementary'],
     chapters: [
-      { id: 'eng-1', title: 'Unit 1: Prose - The Fun They Had & Sound of Music', subCategory: 'Prose', status: 'Not Started' },
-      { id: 'eng-2', title: 'Unit 1: Poetry - The Road Not Taken & Wind', subCategory: 'Poetry', status: 'Not Started' },
-      { id: 'eng-3', title: 'Unit 2: Prose - The Little Girl & A Truly Beautiful Mind', subCategory: 'Prose', status: 'Not Started' },
-      { id: 'eng-4', title: 'Unit 2: Poetry - Rain on the Roof & Lake Isle of Innisfree', subCategory: 'Poetry', status: 'Not Started' },
-      { id: 'eng-5', title: 'Unit 3: Prose - The Snake and the Mirror & My Childhood', subCategory: 'Prose', status: 'Not Started' },
-      { id: 'eng-6', title: 'Unit 3: Poetry - A Legend of the Northland & No Men Are Foreign', subCategory: 'Poetry', status: 'Not Started' },
-      { id: 'eng-7', title: 'Unit 4: Prose - Reach for the Top & Kathmandu', subCategory: 'Prose', status: 'Not Started' },
-      { id: 'eng-8', title: 'Unit 4: Supplementary - The Lost Child & The Adventures of Toto', subCategory: 'Supplementary', status: 'Not Started' },
-      { id: 'eng-9', title: 'Unit 5: Supplementary - Iswaran the Storyteller & In the Kingdom of Fools', subCategory: 'Supplementary', status: 'Not Started' },
-      { id: 'eng-10', title: 'Unit 6: Supplementary - The Happy Prince & The Last Leaf', subCategory: 'Supplementary', status: 'Not Started' }
+      // Prose
+      { id: 'eng-1', title: 'Prose: The Fun They Had', subCategory: 'Prose', status: 'Not Started' },
+      { id: 'eng-2', title: 'Prose: The Sound of Music', subCategory: 'Prose', status: 'Not Started' },
+      { id: 'eng-3', title: 'Prose: The Little Girl', subCategory: 'Prose', status: 'Not Started' },
+      { id: 'eng-4', title: 'Prose: A Truly Beautiful Mind', subCategory: 'Prose', status: 'Not Started' },
+      { id: 'eng-5', title: 'Prose: The Snake and the Mirror', subCategory: 'Prose', status: 'Not Started' },
+      { id: 'eng-6', title: 'Prose: My Childhood', subCategory: 'Prose', status: 'Not Started' },
+      { id: 'eng-7', title: 'Prose: Reach for the Top', subCategory: 'Prose', status: 'Not Started' },
+      { id: 'eng-8', title: 'Prose: Kathmandu', subCategory: 'Prose', status: 'Not Started' },
+      { id: 'eng-9', title: 'Prose: If I Were You', subCategory: 'Prose', status: 'Not Started' },
+      // Poetry
+      { id: 'eng-10', title: 'Poetry: The Road Not Taken (Robert Frost)', subCategory: 'Poetry', status: 'Not Started' },
+      { id: 'eng-11', title: 'Poetry: Wind (Subramania Bharati)', subCategory: 'Poetry', status: 'Not Started' },
+      { id: 'eng-12', title: 'Poetry: Rain on the Roof (Coates Kinney)', subCategory: 'Poetry', status: 'Not Started' },
+      { id: 'eng-13', title: 'Poetry: The Lake Isle of Innisfree (W.B. Yeats)', subCategory: 'Poetry', status: 'Not Started' },
+      { id: 'eng-14', title: 'Poetry: A Legend of the Northland (Phoebe Cary)', subCategory: 'Poetry', status: 'Not Started' },
+      { id: 'eng-15', title: 'Poetry: No Men Are Foreign (James Kirkup)', subCategory: 'Poetry', status: 'Not Started' },
+      { id: 'eng-16', title: 'Poetry: On Killing a Tree (Gieve Patel)', subCategory: 'Poetry', status: 'Not Started' },
+      { id: 'eng-17', title: 'Poetry: A Slumber Did My Spirit Seal (William Wordsworth)', subCategory: 'Poetry', status: 'Not Started' },
+      // Supplementary Stories
+      { id: 'eng-18', title: 'Supplementary: The Lost Child (Mulk Raj Anand)', subCategory: 'Supplementary', status: 'Not Started' },
+      { id: 'eng-19', title: 'Supplementary: The Adventures of Toto (Ruskin Bond)', subCategory: 'Supplementary', status: 'Not Started' },
+      { id: 'eng-20', title: 'Supplementary: Iswaran the Storyteller (R.K. Laxman)', subCategory: 'Supplementary', status: 'Not Started' },
+      { id: 'eng-21', title: 'Supplementary: In the Kingdom of Fools (A.K. Ramanujan)', subCategory: 'Supplementary', status: 'Not Started' },
+      { id: 'eng-22', title: 'Supplementary: The Happy Prince (Oscar Wilde)', subCategory: 'Supplementary', status: 'Not Started' },
+      { id: 'eng-23', title: 'Supplementary: The Last Leaf (O. Henry)', subCategory: 'Supplementary', status: 'Not Started' },
+      { id: 'eng-24', title: 'Supplementary: A House Is Not a Home (Zan Gaudioso)', subCategory: 'Supplementary', status: 'Not Started' },
+      { id: 'eng-25', title: 'Supplementary: The Beggar (Anton Chekhov)', subCategory: 'Supplementary', status: 'Not Started' }
     ]
   },
   {
@@ -69,18 +87,28 @@ export const INITIAL_SUBJECTS: Subject[] = [
     title: 'Ganga',
     icon: 'Feather',
     color: '#f59e0b', // amber
-    subCategories: ['गद्य खंड (Prose)', 'काव्य खंड (Poetry)'],
+    subCategories: ['गद्य खंड (Prose)', 'काव्य खंड (Poetry)', 'संचयन (Supplementary)'],
     chapters: [
-      { id: 'hin-1', title: 'दो बैलों की कथा (गद्य खंड)', subCategory: 'गद्य खंड (Prose)', status: 'Not Started' },
-      { id: 'hin-2', title: 'ल्हासा की ओर (गद्य खंड)', subCategory: 'गद्य खंड (Prose)', status: 'Not Started' },
-      { id: 'hin-3', title: 'उपभोक्तावाद की संस्कृति (गद्य खंड)', subCategory: 'गद्य खंड (Prose)', status: 'Not Started' },
-      { id: 'hin-4', title: 'सांवले सपनों की याद (गद्य खंड)', subCategory: 'गद्य खंड (Prose)', status: 'Not Started' },
-      { id: 'hin-5', title: 'प्रेमचंद के फटे जूते (गद्य खंड)', subCategory: 'गद्य खंड (Prose)', status: 'Not Started' },
-      { id: 'hin-6', title: 'साखियाँ एवं सबद - कबीर (काव्य खंड)', subCategory: 'काव्य खंड (Poetry)', status: 'Not Started' },
-      { id: 'hin-7', title: 'वाख - ललद्यद (काव्य खंड)', subCategory: 'काव्य खंड (Poetry)', status: 'Not Started' },
-      { id: 'hin-8', title: 'सवैया - रसखान (काव्य खंड)', subCategory: 'काव्य खंड (Poetry)', status: 'Not Started' },
-      { id: 'hin-9', title: 'कैदी और कोकिला - माखनलाल चतुर्वेदी (काव्य खंड)', subCategory: 'काव्य खंड (Poetry)', status: 'Not Started' },
-      { id: 'hin-10', title: 'ग्राम श्री - सुमित्रानंदन पंत (काव्य खंड)', subCategory: 'काव्य खंड (Poetry)', status: 'Not Started' }
+      // गद्य खंड
+      { id: 'hin-1', title: 'गद्य खंड: दो बैलों की कथा (प्रेमचंद)', subCategory: 'गद्य खंड (Prose)', status: 'Not Started' },
+      { id: 'hin-2', title: 'गद्य खंड: ल्हासा की ओर (राहुल सांकृत्यायन)', subCategory: 'गद्य खंड (Prose)', status: 'Not Started' },
+      { id: 'hin-3', title: 'गद्य खंड: उपभोक्तावाद की संस्कृति (श्यामाचरण दुबे)', subCategory: 'गद्य खंड (Prose)', status: 'Not Started' },
+      { id: 'hin-4', title: 'गद्य खंड: सांवले सपनों की याद (जाबिर हुसैन)', subCategory: 'गद्य खंड (Prose)', status: 'Not Started' },
+      { id: 'hin-5', title: 'गद्य खंड: प्रेमचंद के फटे जूते (हरिशंकर परसाई)', subCategory: 'गद्य खंड (Prose)', status: 'Not Started' },
+      { id: 'hin-6', title: 'गद्य खंड: मेरे बचपन के दिन (महादेवी वर्मा)', subCategory: 'गद्य खंड (Prose)', status: 'Not Started' },
+      // काव्य खंड
+      { id: 'hin-7', title: 'काव्य खंड: साखियाँ एवं सबद (कबीर)', subCategory: 'काव्य खंड (Poetry)', status: 'Not Started' },
+      { id: 'hin-8', title: 'काव्य खंड: वाख (ललद्यद)', subCategory: 'काव्य खंड (Poetry)', status: 'Not Started' },
+      { id: 'hin-9', title: 'काव्य खंड: सवैया (रसखान)', subCategory: 'काव्य खंड (Poetry)', status: 'Not Started' },
+      { id: 'hin-10', title: 'काव्य खंड: कैदी और कोकिला (माखनलाल चतुर्वेदी)', subCategory: 'काव्य खंड (Poetry)', status: 'Not Started' },
+      { id: 'hin-11', title: 'काव्य खंड: ग्राम श्री (सुमित्रानंदन पंत)', subCategory: 'काव्य खंड (Poetry)', status: 'Not Started' },
+      { id: 'hin-12', title: 'काव्य खंड: मेघ आए (सर्वेश्वर दयाल सक्सेना)', subCategory: 'काव्य खंड (Poetry)', status: 'Not Started' },
+      { id: 'hin-13', title: 'काव्य खंड: बच्चे काम पर जा रहे हैं (राजेश जोशी)', subCategory: 'काव्य खंड (Poetry)', status: 'Not Started' },
+      // संचयन
+      { id: 'hin-14', title: 'संचयन: गिल्लू (महादेवी वर्मा)', subCategory: 'संचयन (Supplementary)', status: 'Not Started' },
+      { id: 'hin-15', title: 'संचयन: स्मृति (श्रीराम शर्मा)', subCategory: 'संचयन (Supplementary)', status: 'Not Started' },
+      { id: 'hin-16', title: 'संचयन: कल्लू कुम्हार की उनाकोटी (के. विक्रम सिंह)', subCategory: 'संचयन (Supplementary)', status: 'Not Started' },
+      { id: 'hin-17', title: 'संचयन: मेरा छोटा-सा निजी पुस्तकालय (धर्मवीर भारती)', subCategory: 'संचयन (Supplementary)', status: 'Not Started' }
     ]
   },
   {
@@ -114,25 +142,30 @@ export const INITIAL_SUBJECTS: Subject[] = [
     color: '#ef4444', // red/rose
     subCategories: ['History', 'Geography', 'Civics', 'Economics'],
     chapters: [
-      // History
-      { id: 'sst-1', title: 'The French Revolution', subCategory: 'History', status: 'Not Started' },
-      { id: 'sst-2', title: 'Socialism in Europe and the Russian Revolution', subCategory: 'History', status: 'Not Started' },
-      { id: 'sst-3', title: 'Nazism and the Rise of Hitler', subCategory: 'History', status: 'Not Started' },
-      // Geography
-      { id: 'sst-4', title: 'India - Size and Location', subCategory: 'Geography', status: 'Not Started' },
-      { id: 'sst-5', title: 'Physical Features of India', subCategory: 'Geography', status: 'Not Started' },
-      { id: 'sst-6', title: 'Drainage Systems and Water Bodies', subCategory: 'Geography', status: 'Not Started' },
-      { id: 'sst-7', title: 'Climate and Natural Vegetation', subCategory: 'Geography', status: 'Not Started' },
-      // Civics (Political Science)
-      { id: 'sst-8', title: 'What is Democracy? Why Democracy?', subCategory: 'Civics', status: 'Not Started' },
-      { id: 'sst-9', title: 'Constitutional Design', subCategory: 'Civics', status: 'Not Started' },
-      { id: 'sst-10', title: 'Electoral Politics', subCategory: 'Civics', status: 'Not Started' },
-      { id: 'sst-11', title: 'Working of Institutions', subCategory: 'Civics', status: 'Not Started' },
-      // Economics
-      { id: 'sst-12', title: 'The Story of Village Palampur', subCategory: 'Economics', status: 'Not Started' },
-      { id: 'sst-13', title: 'People as Resource', subCategory: 'Economics', status: 'Not Started' },
-      { id: 'sst-14', title: 'Poverty as a Challenge', subCategory: 'Economics', status: 'Not Started' },
-      { id: 'sst-15', title: 'Food Security in India', subCategory: 'Economics', status: 'Not Started' }
+      // History (इतिहास)
+      { id: 'sst-1', title: 'History: The French Revolution', subCategory: 'History', status: 'Not Started' },
+      { id: 'sst-2', title: 'History: Socialism in Europe and the Russian Revolution', subCategory: 'History', status: 'Not Started' },
+      { id: 'sst-3', title: 'History: Nazism and the Rise of Hitler', subCategory: 'History', status: 'Not Started' },
+      { id: 'sst-4', title: 'History: Forest Society and Colonialism', subCategory: 'History', status: 'Not Started' },
+      { id: 'sst-5', title: 'History: Pastoralists in the Modern World', subCategory: 'History', status: 'Not Started' },
+      // Geography (भूगोल)
+      { id: 'sst-6', title: 'Geography: India - Size and Location', subCategory: 'Geography', status: 'Not Started' },
+      { id: 'sst-7', title: 'Geography: Physical Features of India', subCategory: 'Geography', status: 'Not Started' },
+      { id: 'sst-8', title: 'Geography: Drainage Systems and Water Bodies', subCategory: 'Geography', status: 'Not Started' },
+      { id: 'sst-9', title: 'Geography: Climate and Monsoons', subCategory: 'Geography', status: 'Not Started' },
+      { id: 'sst-10', title: 'Geography: Natural Vegetation and Wildlife', subCategory: 'Geography', status: 'Not Started' },
+      { id: 'sst-11', title: 'Geography: Population Dynamics', subCategory: 'Geography', status: 'Not Started' },
+      // Civics (राजनीति विज्ञान)
+      { id: 'sst-12', title: 'Civics: What is Democracy? Why Democracy?', subCategory: 'Civics', status: 'Not Started' },
+      { id: 'sst-13', title: 'Civics: Constitutional Design', subCategory: 'Civics', status: 'Not Started' },
+      { id: 'sst-14', title: 'Civics: Electoral Politics', subCategory: 'Civics', status: 'Not Started' },
+      { id: 'sst-15', title: 'Civics: Working of Institutions', subCategory: 'Civics', status: 'Not Started' },
+      { id: 'sst-16', title: 'Civics: Democratic Rights', subCategory: 'Civics', status: 'Not Started' },
+      // Economics (अर्थशास्त्र)
+      { id: 'sst-17', title: 'Economics: The Story of Village Palampur', subCategory: 'Economics', status: 'Not Started' },
+      { id: 'sst-18', title: 'Economics: People as Resource', subCategory: 'Economics', status: 'Not Started' },
+      { id: 'sst-19', title: 'Economics: Poverty as a Challenge', subCategory: 'Economics', status: 'Not Started' },
+      { id: 'sst-20', title: 'Economics: Food Security in India', subCategory: 'Economics', status: 'Not Started' }
     ]
   }
 ];

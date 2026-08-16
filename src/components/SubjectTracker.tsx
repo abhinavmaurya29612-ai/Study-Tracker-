@@ -61,6 +61,16 @@ export const SubjectTracker: React.FC<SubjectTrackerProps> = ({
   const notStartedCh = currentSubject.chapters.filter(c => c.status === 'Not Started').length;
   const percent = totalCh > 0 ? Math.round((completedCh / totalCh) * 100) : 0;
 
+  // Cycle chapter status when clicking full chapter card
+  const handleCycleStatus = (chapterId: string, currentStatus: ChapterStatus) => {
+    let nextStatus: ChapterStatus = 'Not Started';
+    if (currentStatus === 'Not Started') nextStatus = 'In Progress';
+    else if (currentStatus === 'In Progress') nextStatus = 'Completed';
+    else if (currentStatus === 'Completed') nextStatus = 'Not Started';
+
+    onUpdateChapterStatus(currentSubject.id, chapterId, nextStatus);
+  };
+
   return (
     <div className="space-y-6 pb-12">
       {/* 1. TOP SUBJECT SELECTOR TABS */}
@@ -79,7 +89,7 @@ export const SubjectTracker: React.FC<SubjectTrackerProps> = ({
                 setActiveSubjectId(subj.id);
                 setActiveSubCategoryFilter('All');
               }}
-              className={`flex items-center space-x-3 px-4 py-3 rounded-2xl transition-all border whitespace-nowrap min-w-[200px] ${
+              className={`flex items-center space-x-3 px-4 py-3 rounded-2xl transition-all border whitespace-nowrap min-w-[200px] cursor-pointer ${
                 isActive
                   ? 'bg-slate-800 border-indigo-500/80 text-white shadow-lg shadow-indigo-500/10'
                   : 'bg-slate-900/60 border-slate-800 text-slate-400 hover:bg-slate-800/60 hover:text-slate-200'
@@ -178,7 +188,7 @@ export const SubjectTracker: React.FC<SubjectTrackerProps> = ({
           </span>
           <button
             onClick={() => setActiveSubCategoryFilter('All')}
-            className={`px-3 py-1.5 rounded-lg text-xs font-semibold transition-all whitespace-nowrap ${
+            className={`px-3 py-1.5 rounded-lg text-xs font-semibold transition-all whitespace-nowrap cursor-pointer ${
               activeSubCategoryFilter === 'All'
                 ? 'bg-indigo-600 text-white shadow-md'
                 : 'text-slate-400 hover:text-slate-200 hover:bg-slate-800'
@@ -193,7 +203,7 @@ export const SubjectTracker: React.FC<SubjectTrackerProps> = ({
               <button
                 key={subCat}
                 onClick={() => setActiveSubCategoryFilter(subCat)}
-                className={`px-3.5 py-1.5 rounded-lg text-xs font-semibold transition-all whitespace-nowrap flex items-center gap-1.5 ${
+                className={`px-3.5 py-1.5 rounded-lg text-xs font-semibold transition-all whitespace-nowrap flex items-center gap-1.5 cursor-pointer ${
                   activeSubCategoryFilter === subCat
                     ? 'bg-indigo-600 text-white shadow-md'
                     : 'bg-slate-800/80 text-slate-300 hover:bg-slate-800 border border-slate-700/50'
@@ -230,7 +240,7 @@ export const SubjectTracker: React.FC<SubjectTrackerProps> = ({
           <select
             value={statusFilter}
             onChange={e => setStatusFilter(e.target.value)}
-            className="bg-slate-800 border border-slate-700 rounded-xl px-3 py-2 text-xs text-white focus:outline-none focus:border-indigo-500"
+            className="bg-slate-800 border border-slate-700 rounded-xl px-3 py-2 text-xs text-white focus:outline-none focus:border-indigo-500 cursor-pointer"
           >
             <option value="All">All Statuses</option>
             <option value="Completed">Completed</option>
@@ -240,7 +250,7 @@ export const SubjectTracker: React.FC<SubjectTrackerProps> = ({
         </div>
       </div>
 
-      {/* 5. CHAPTERS LIST & INTERACTIVE STATUS TOGGLES */}
+      {/* 5. CHAPTERS LIST & INTERACTIVE CLICKABLE ROWS */}
       <div className="space-y-3">
         {filteredChapters.length === 0 ? (
           <div className="text-center py-12 bg-slate-800/40 rounded-2xl border border-dashed border-slate-700">
@@ -248,7 +258,7 @@ export const SubjectTracker: React.FC<SubjectTrackerProps> = ({
             <p className="text-sm font-medium text-slate-300">No chapters found matching filter criteria.</p>
             <button
               onClick={() => { setSearchQuery(''); setStatusFilter('All'); setActiveSubCategoryFilter('All'); }}
-              className="mt-2 text-xs text-indigo-400 hover:underline"
+              className="mt-2 text-xs text-indigo-400 hover:underline cursor-pointer"
             >
               Reset Filters
             </button>
@@ -258,12 +268,13 @@ export const SubjectTracker: React.FC<SubjectTrackerProps> = ({
             return (
               <div
                 key={chapter.id}
-                className={`p-4 rounded-2xl border transition-all flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 ${
+                onClick={() => handleCycleStatus(chapter.id, chapter.status)}
+                className={`p-4 rounded-2xl border transition-all flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 cursor-pointer group hover:-translate-y-0.5 ${
                   chapter.status === 'Completed'
-                    ? 'bg-emerald-950/20 border-emerald-500/30'
+                    ? 'bg-emerald-950/20 border-emerald-500/30 hover:border-emerald-500/60'
                     : chapter.status === 'In Progress'
-                    ? 'bg-amber-950/20 border-amber-500/30'
-                    : 'bg-slate-800/70 border-slate-700/60 hover:bg-slate-800'
+                    ? 'bg-amber-950/20 border-amber-500/30 hover:border-amber-500/60'
+                    : 'bg-slate-800/70 border-slate-700/60 hover:bg-slate-800 hover:border-slate-500'
                 }`}
               >
                 <div className="flex items-start space-x-3.5">
@@ -272,7 +283,7 @@ export const SubjectTracker: React.FC<SubjectTrackerProps> = ({
                   </span>
                   <div>
                     <div className="flex items-center space-x-2">
-                      <h4 className={`font-semibold text-base ${chapter.status === 'Completed' ? 'text-emerald-200 line-through' : 'text-white'}`}>
+                      <h4 className={`font-semibold text-base group-hover:text-indigo-300 transition-colors ${chapter.status === 'Completed' ? 'text-emerald-200 line-through' : 'text-white'}`}>
                         {chapter.title}
                       </h4>
                     </div>
@@ -285,10 +296,13 @@ export const SubjectTracker: React.FC<SubjectTrackerProps> = ({
                 </div>
 
                 {/* Interactive Status Switcher Buttons */}
-                <div className="flex items-center space-x-2 self-end sm:self-auto flex-shrink-0">
+                <div
+                  className="flex items-center space-x-2 self-end sm:self-auto flex-shrink-0"
+                  onClick={e => e.stopPropagation()} // Prevent double firing if clicking button specifically
+                >
                   <button
                     onClick={() => onUpdateChapterStatus(currentSubject.id, chapter.id, 'Not Started')}
-                    className={`flex items-center space-x-1 px-3 py-1.5 rounded-lg text-xs font-medium transition-all ${
+                    className={`flex items-center space-x-1 px-3 py-1.5 rounded-lg text-xs font-medium transition-all cursor-pointer ${
                       chapter.status === 'Not Started'
                         ? 'bg-slate-700 text-white font-bold border border-slate-500 shadow'
                         : 'text-slate-400 hover:bg-slate-700/50 hover:text-slate-200'
@@ -300,7 +314,7 @@ export const SubjectTracker: React.FC<SubjectTrackerProps> = ({
 
                   <button
                     onClick={() => onUpdateChapterStatus(currentSubject.id, chapter.id, 'In Progress')}
-                    className={`flex items-center space-x-1 px-3 py-1.5 rounded-lg text-xs font-medium transition-all ${
+                    className={`flex items-center space-x-1 px-3 py-1.5 rounded-lg text-xs font-medium transition-all cursor-pointer ${
                       chapter.status === 'In Progress'
                         ? 'bg-amber-500/20 text-amber-300 font-bold border border-amber-500/50 shadow'
                         : 'text-slate-400 hover:bg-amber-500/10 hover:text-amber-300'
@@ -312,7 +326,7 @@ export const SubjectTracker: React.FC<SubjectTrackerProps> = ({
 
                   <button
                     onClick={() => onUpdateChapterStatus(currentSubject.id, chapter.id, 'Completed')}
-                    className={`flex items-center space-x-1 px-3 py-1.5 rounded-lg text-xs font-medium transition-all ${
+                    className={`flex items-center space-x-1 px-3 py-1.5 rounded-lg text-xs font-medium transition-all cursor-pointer ${
                       chapter.status === 'Completed'
                         ? 'bg-emerald-500/20 text-emerald-300 font-bold border border-emerald-500/50 shadow'
                         : 'text-slate-400 hover:bg-emerald-500/10 hover:text-emerald-300'

@@ -24,7 +24,8 @@ export function App() {
     addTask,
     toggleTask,
     deleteTask,
-    recordQuizResult
+    recordQuizResult,
+    resetToDefaults
   } = useStudyApp();
 
   const handleNavigate = (tab: TabType, subjectId?: string) => {
@@ -60,6 +61,8 @@ export function App() {
             onNavigate={handleNavigate}
             showQuizBanner={showQuizBanner}
             onCloseQuizBanner={() => setShowQuizBanner(false)}
+            onToggleTask={toggleTask}
+            onResetToDefaults={resetToDefaults}
           />
         )}
 

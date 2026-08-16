@@ -16,7 +16,8 @@ import {
   BookOpen,
   Feather,
   Laptop,
-  Globe
+  Globe,
+  RotateCcw
 } from 'lucide-react';
 
 interface DashboardProps {
@@ -27,6 +28,8 @@ interface DashboardProps {
   onNavigate: (tab: 'subjects' | 'timer' | 'quiz' | 'tasks', subjectId?: string) => void;
   showQuizBanner: boolean;
   onCloseQuizBanner: () => void;
+  onToggleTask: (taskId: string) => void;
+  onResetToDefaults: () => void;
 }
 
 // Icon mapping helper
@@ -50,6 +53,8 @@ export const Dashboard: React.FC<DashboardProps> = ({
   onNavigate,
   showQuizBanner,
   onCloseQuizBanner,
+  onToggleTask,
+  onResetToDefaults
 }) => {
   const todayStr = new Date().toISOString().split('T')[0];
 
@@ -104,7 +109,7 @@ export const Dashboard: React.FC<DashboardProps> = ({
           </button>
 
           <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
-            <div className="flex items-start space-x-4">
+            <div className="flex items-start space-x-4 cursor-pointer" onClick={() => onNavigate('quiz')}>
               <div className="p-3 bg-gradient-to-tr from-indigo-500 to-pink-500 rounded-xl shadow-lg shadow-indigo-500/30 flex-shrink-0">
                 <Brain className="w-7 h-7 text-white" />
               </div>
@@ -117,7 +122,7 @@ export const Dashboard: React.FC<DashboardProps> = ({
                     <Sparkles className="w-3.5 h-3.5 mr-1" /> Quick 5-Min MCQ Test
                   </span>
                 </div>
-                <h3 className="text-xl font-bold mt-1 text-white">
+                <h3 className="text-xl font-bold mt-1 text-white hover:text-indigo-300 transition-colors">
                   Ready to test your Class 9 NCERT Knowledge?
                 </h3>
                 <p className="text-sm text-slate-300 mt-1 max-w-2xl">
@@ -137,33 +142,42 @@ export const Dashboard: React.FC<DashboardProps> = ({
         </div>
       )}
 
-      {/* 2. STATS OVERVIEW CARDS */}
+      {/* 2. STATS OVERVIEW CARDS (FULLY CLICKABLE) */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-        {/* Today's Study Hours */}
-        <div className="bg-slate-800/80 border border-slate-700/60 rounded-2xl p-5 shadow-lg relative overflow-hidden">
+        {/* Today's Study Hours (Click -> Timer) */}
+        <div
+          onClick={() => onNavigate('timer')}
+          className="bg-slate-800/80 hover:bg-slate-800 border border-slate-700/60 hover:border-blue-500/50 rounded-2xl p-5 shadow-lg relative overflow-hidden cursor-pointer transition-all transform hover:-translate-y-1 group"
+        >
           <div className="flex items-center justify-between">
-            <span className="text-xs font-semibold uppercase tracking-wider text-slate-400">Today's Study</span>
-            <div className="p-2 rounded-xl bg-blue-500/10 text-blue-400 border border-blue-500/20">
+            <span className="text-xs font-semibold uppercase tracking-wider text-slate-400 group-hover:text-blue-400 transition-colors">Today's Study</span>
+            <div className="p-2 rounded-xl bg-blue-500/10 text-blue-400 border border-blue-500/20 group-hover:scale-110 transition-transform">
               <Clock className="w-5 h-5" />
             </div>
           </div>
           <div className="mt-4 flex items-baseline justify-between">
             <span className="text-3xl font-extrabold text-white">{formatTimeHours(todayMinutes)}</span>
-            <span className="text-xs font-medium text-slate-400">{todayMinutes} minutes logged</span>
+            <span className="text-xs font-medium text-slate-400">{todayMinutes} mins logged</span>
           </div>
           <div className="mt-3 w-full bg-slate-700/50 rounded-full h-1.5 overflow-hidden">
             <div
               className="bg-blue-500 h-1.5 rounded-full transition-all duration-500"
-              style={{ width: `${Math.min(100, (todayMinutes / 120) * 100)}%` }} // 2 hr goal benchmark
+              style={{ width: `${Math.min(100, (todayMinutes / 120) * 100)}%` }}
             />
           </div>
+          <p className="text-[10px] text-blue-400 mt-2 font-semibold flex items-center justify-end">
+            Click to start timer &rarr;
+          </p>
         </div>
 
-        {/* Weekly Study Hours */}
-        <div className="bg-slate-800/80 border border-slate-700/60 rounded-2xl p-5 shadow-lg relative overflow-hidden">
+        {/* Weekly Study Hours (Click -> Timer / History) */}
+        <div
+          onClick={() => onNavigate('timer')}
+          className="bg-slate-800/80 hover:bg-slate-800 border border-slate-700/60 hover:border-purple-500/50 rounded-2xl p-5 shadow-lg relative overflow-hidden cursor-pointer transition-all transform hover:-translate-y-1 group"
+        >
           <div className="flex items-center justify-between">
-            <span className="text-xs font-semibold uppercase tracking-wider text-slate-400">Weekly Total</span>
-            <div className="p-2 rounded-xl bg-purple-500/10 text-purple-400 border border-purple-500/20">
+            <span className="text-xs font-semibold uppercase tracking-wider text-slate-400 group-hover:text-purple-400 transition-colors">Weekly Total</span>
+            <div className="p-2 rounded-xl bg-purple-500/10 text-purple-400 border border-purple-500/20 group-hover:scale-110 transition-transform">
               <Calendar className="w-5 h-5" />
             </div>
           </div>
@@ -174,16 +188,22 @@ export const Dashboard: React.FC<DashboardProps> = ({
           <div className="mt-3 w-full bg-slate-700/50 rounded-full h-1.5 overflow-hidden">
             <div
               className="bg-purple-500 h-1.5 rounded-full transition-all duration-500"
-              style={{ width: `${Math.min(100, (weeklyMinutes / 840) * 100)}%` }} // 14 hr weekly goal
+              style={{ width: `${Math.min(100, (weeklyMinutes / 840) * 100)}%` }}
             />
           </div>
+          <p className="text-[10px] text-purple-400 mt-2 font-semibold flex items-center justify-end">
+            Click to view study history &rarr;
+          </p>
         </div>
 
-        {/* Daily Streak Counter */}
-        <div className="bg-slate-800/80 border border-slate-700/60 rounded-2xl p-5 shadow-lg relative overflow-hidden">
+        {/* Daily Streak Counter (Click -> Quiz / Action) */}
+        <div
+          onClick={() => onNavigate('quiz')}
+          className="bg-slate-800/80 hover:bg-slate-800 border border-slate-700/60 hover:border-amber-500/50 rounded-2xl p-5 shadow-lg relative overflow-hidden cursor-pointer transition-all transform hover:-translate-y-1 group"
+        >
           <div className="flex items-center justify-between">
-            <span className="text-xs font-semibold uppercase tracking-wider text-slate-400">Study Streak</span>
-            <div className="p-2 rounded-xl bg-amber-500/10 text-amber-400 border border-amber-500/20">
+            <span className="text-xs font-semibold uppercase tracking-wider text-slate-400 group-hover:text-amber-400 transition-colors">Study Streak</span>
+            <div className="p-2 rounded-xl bg-amber-500/10 text-amber-400 border border-amber-500/20 group-hover:scale-110 transition-transform">
               <Flame className="w-5 h-5 text-amber-500" />
             </div>
           </div>
@@ -192,15 +212,18 @@ export const Dashboard: React.FC<DashboardProps> = ({
             <span className="text-xs font-medium text-slate-400">Active Momentum</span>
           </div>
           <p className="mt-3 text-xs text-slate-400">
-            Study every day to keep your streak burning!
+            Keep streak active by attempting daily quizzes!
           </p>
         </div>
 
-        {/* Overall NCERT Progress */}
-        <div className="bg-slate-800/80 border border-slate-700/60 rounded-2xl p-5 shadow-lg relative overflow-hidden">
+        {/* Overall NCERT Progress (Click -> Subjects) */}
+        <div
+          onClick={() => onNavigate('subjects')}
+          className="bg-slate-800/80 hover:bg-slate-800 border border-slate-700/60 hover:border-emerald-500/50 rounded-2xl p-5 shadow-lg relative overflow-hidden cursor-pointer transition-all transform hover:-translate-y-1 group"
+        >
           <div className="flex items-center justify-between">
-            <span className="text-xs font-semibold uppercase tracking-wider text-slate-400">Syllabus Covered</span>
-            <div className="p-2 rounded-xl bg-emerald-500/10 text-emerald-400 border border-emerald-500/20">
+            <span className="text-xs font-semibold uppercase tracking-wider text-slate-400 group-hover:text-emerald-400 transition-colors">Syllabus Covered</span>
+            <div className="p-2 rounded-xl bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 group-hover:scale-110 transition-transform">
               <Award className="w-5 h-5 text-emerald-400" />
             </div>
           </div>
@@ -214,6 +237,9 @@ export const Dashboard: React.FC<DashboardProps> = ({
               style={{ width: `${overallProgressPercent}%` }}
             />
           </div>
+          <p className="text-[10px] text-emerald-400 mt-2 font-semibold flex items-center justify-end">
+            Click to track chapters &rarr;
+          </p>
         </div>
       </div>
 
@@ -227,13 +253,24 @@ export const Dashboard: React.FC<DashboardProps> = ({
             </h2>
             <p className="text-xs text-slate-400">Official NCERT curriculum with updated chapters and sub-categories</p>
           </div>
-          <button
-            onClick={() => onNavigate('subjects')}
-            className="text-sm text-indigo-400 hover:text-indigo-300 font-medium flex items-center gap-1"
-          >
-            <span>View All Syllabus</span>
-            <ArrowRight className="w-4 h-4" />
-          </button>
+
+          <div className="flex items-center space-x-3">
+            <button
+              onClick={onResetToDefaults}
+              className="text-xs font-semibold px-3 py-1.5 rounded-lg bg-rose-500/10 text-rose-400 hover:bg-rose-500/20 border border-rose-500/30 transition-colors flex items-center gap-1"
+              title="Reset all progress to zero for a fresh start"
+            >
+              <RotateCcw className="w-3.5 h-3.5" />
+              <span>Reset Data to Zero</span>
+            </button>
+            <button
+              onClick={() => onNavigate('subjects')}
+              className="text-sm text-indigo-400 hover:text-indigo-300 font-medium flex items-center gap-1"
+            >
+              <span>View All Syllabus</span>
+              <ArrowRight className="w-4 h-4" />
+            </button>
+          </div>
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
@@ -248,12 +285,12 @@ export const Dashboard: React.FC<DashboardProps> = ({
               <div
                 key={subject.id}
                 onClick={() => onNavigate('subjects', subject.id)}
-                className="bg-slate-800/80 border border-slate-700/60 hover:border-indigo-500/50 rounded-2xl p-5 shadow-md hover:shadow-indigo-500/10 transition-all cursor-pointer group"
+                className="bg-slate-800/80 border border-slate-700/60 hover:border-indigo-500/50 rounded-2xl p-5 shadow-md hover:shadow-indigo-500/10 transition-all cursor-pointer group hover:-translate-y-0.5"
               >
                 <div className="flex items-start justify-between">
                   <div className="flex items-center space-x-3">
                     <div
-                      className="w-10 h-10 rounded-xl flex items-center justify-center text-white shadow-md"
+                      className="w-10 h-10 rounded-xl flex items-center justify-center text-white shadow-md group-hover:scale-105 transition-transform"
                       style={{ backgroundColor: subject.color }}
                     >
                       <Icon className="w-5 h-5" />
@@ -284,11 +321,11 @@ export const Dashboard: React.FC<DashboardProps> = ({
                   </div>
                 </div>
 
-                {/* Subcategories tags if available (e.g. Bio/Phy/Chem for Science or His/Geo/Civ/Eco for SST) */}
+                {/* Subcategories tags */}
                 {subject.subCategories && subject.subCategories.length > 0 && (
                   <div className="mt-4 pt-3 border-t border-slate-700/40 flex flex-wrap gap-1.5">
                     {subject.subCategories.map(subCat => (
-                      <span key={subCat} className="text-[10px] font-semibold px-2 py-0.5 rounded bg-slate-900/80 text-slate-400 border border-slate-700/60">
+                      <span key={subCat} className="text-[10px] font-semibold px-2 py-0.5 rounded bg-slate-900/80 text-slate-400 border border-slate-700/60 group-hover:border-indigo-500/40 transition-colors">
                         {subCat}
                       </span>
                     ))}
@@ -310,7 +347,7 @@ export const Dashboard: React.FC<DashboardProps> = ({
                 <CheckCircle2 className="w-5 h-5 text-indigo-400" />
                 Daily Target Checklist
               </h3>
-              <p className="text-xs text-slate-400">Keep track of today's study goals</p>
+              <p className="text-xs text-slate-400">Click any target checkbox to toggle completion status</p>
             </div>
             <button
               onClick={() => onNavigate('tasks')}
@@ -331,11 +368,14 @@ export const Dashboard: React.FC<DashboardProps> = ({
               {pendingTasks.slice(0, 4).map(task => (
                 <div
                   key={task.id}
-                  className="flex items-center justify-between p-3 bg-slate-900/60 border border-slate-700/50 rounded-xl hover:bg-slate-900 transition-colors"
+                  onClick={() => onToggleTask(task.id)}
+                  className="flex items-center justify-between p-3 bg-slate-900/60 border border-slate-700/50 rounded-xl hover:bg-slate-900 cursor-pointer transition-colors group"
                 >
                   <div className="flex items-center space-x-3">
-                    <div className="w-2 h-2 rounded-full bg-indigo-400" />
-                    <span className="text-sm text-slate-200 font-medium">{task.title}</span>
+                    <div className="w-4 h-4 rounded border border-slate-600 group-hover:border-indigo-400 flex items-center justify-center transition-colors">
+                      <div className="w-2 h-2 rounded-sm bg-indigo-400 opacity-0 group-hover:opacity-100 transition-opacity" />
+                    </div>
+                    <span className="text-sm text-slate-200 font-medium group-hover:text-white transition-colors">{task.title}</span>
                   </div>
                   <span className={`text-[10px] font-bold px-2 py-0.5 rounded uppercase ${
                     task.priority === 'high'
