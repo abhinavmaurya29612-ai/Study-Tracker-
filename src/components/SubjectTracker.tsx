@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import type { Subject, ChapterStatus } from '../types';
+import type { Subject, ChapterStatus, SyllabusVersion } from '../types';
 import {
   BookOpen,
   Search,
@@ -12,7 +12,9 @@ import {
   Feather,
   Laptop,
   Globe,
-  Filter
+  Filter,
+  Sparkles,
+  BookMarked
 } from 'lucide-react';
 
 interface SubjectTrackerProps {
@@ -40,25 +42,35 @@ export const SubjectTracker: React.FC<SubjectTrackerProps> = ({
 }) => {
   const [activeSubjectId, setActiveSubjectId] = useState<string>(selectedSubjectId || subjects[0]?.id || 'math');
   const [activeSubCategoryFilter, setActiveSubCategoryFilter] = useState<string>('All');
+  const [activeSyllabusVersion, setActiveSyllabusVersion] = useState<SyllabusVersion>('New Syllabus');
   const [searchQuery, setSearchQuery] = useState<string>('');
   const [statusFilter, setStatusFilter] = useState<string>('All');
 
   const currentSubject = subjects.find(s => s.id === activeSubjectId) || subjects[0];
   const Icon = getSubjectIcon(currentSubject.icon);
 
+  // Check if current subject has multi-syllabus versions (Math or Science)
+  const hasMultipleSyllabi = currentSubject.chapters.some(ch => ch.syllabusVersion);
+
+  // Chapters filtered by active syllabus version first (if subject has multi-syllabi)
+  const subjectSyllabusChapters = currentSubject.chapters.filter(ch => {
+    if (!hasMultipleSyllabi) return true;
+    return ch.syllabusVersion === activeSyllabusVersion;
+  });
+
   // Filter chapters based on active subcategory, search query, and status
-  const filteredChapters = currentSubject.chapters.filter(ch => {
+  const filteredChapters = subjectSyllabusChapters.filter(ch => {
     const matchesSubCat = activeSubCategoryFilter === 'All' || ch.subCategory === activeSubCategoryFilter;
     const matchesSearch = ch.title.toLowerCase().includes(searchQuery.toLowerCase());
     const matchesStatus = statusFilter === 'All' || ch.status === statusFilter;
     return matchesSubCat && matchesSearch && matchesStatus;
   });
 
-  // Calculate subject progress stats
-  const totalCh = currentSubject.chapters.length;
-  const completedCh = currentSubject.chapters.filter(c => c.status === 'Completed').length;
-  const inProgressCh = currentSubject.chapters.filter(c => c.status === 'In Progress').length;
-  const notStartedCh = currentSubject.chapters.filter(c => c.status === 'Not Started').length;
+  // Calculate subject progress stats for active syllabus version
+  const totalCh = subjectSyllabusChapters.length;
+  const completedCh = subjectSyllabusChapters.filter(c => c.status === 'Completed').length;
+  const inProgressCh = subjectSyllabusChapters.filter(c => c.status === 'In Progress').length;
+  const notStartedCh = subjectSyllabusChapters.filter(c => c.status === 'Not Started').length;
   const percent = totalCh > 0 ? Math.round((completedCh / totalCh) * 100) : 0;
 
   // Cycle chapter status when clicking full chapter card
@@ -78,8 +90,12 @@ export const SubjectTracker: React.FC<SubjectTrackerProps> = ({
         {subjects.map(subj => {
           const SubjIcon = getSubjectIcon(subj.icon);
           const isActive = subj.id === activeSubjectId;
-          const total = subj.chapters.length;
-          const completed = subj.chapters.filter(c => c.status === 'Completed').length;
+
+          // Relevant chapters for preview percentage
+          const subjHasMulti = subj.chapters.some(c => c.syllabusVersion);
+          const relChs = subj.chapters.filter(c => !subjHasMulti || c.syllabusVersion === 'New Syllabus');
+          const total = relChs.length;
+          const completed = relChs.filter(c => c.status === 'Completed').length;
           const pct = total > 0 ? Math.round((completed / total) * 100) : 0;
 
           return (
@@ -131,7 +147,7 @@ export const SubjectTracker: React.FC<SubjectTrackerProps> = ({
             <div>
               <div className="flex items-center space-x-2">
                 <span className="text-xs font-bold uppercase tracking-wider px-2.5 py-0.5 rounded-full bg-slate-900 text-indigo-400 border border-slate-700">
-                  Official NCERT Syllabus
+                  {hasMultipleSyllabi ? activeSyllabusVersion : 'NCERT Syllabus'}
                 </span>
                 {currentSubject.code && (
                   <span className="text-xs font-semibold px-2 py-0.5 rounded-full bg-purple-950 text-purple-300 border border-purple-800">
@@ -164,10 +180,50 @@ export const SubjectTracker: React.FC<SubjectTrackerProps> = ({
           </div>
         </div>
 
+        {/* SYLLABUS VERSION TOGGLE (For Math & Science) */}
+        {hasMultipleSyllabi && (
+          <div className="mt-6 pt-5 border-t border-slate-700/50 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3">
+            <div className="flex items-center space-x-2 text-xs text-slate-300 font-semibold">
+              <BookMarked className="w-4 h-4 text-indigo-400" />
+              <span>Syllabus Edition:</span>
+            </div>
+            <div className="bg-slate-900 p-1 rounded-xl border border-slate-700 flex items-center space-x-1 w-full sm:w-auto">
+              <button
+                onClick={() => {
+                  setActiveSyllabusVersion('New Syllabus');
+                  setActiveSubCategoryFilter('All');
+                }}
+                className={`flex-1 sm:flex-initial flex items-center justify-center space-x-1.5 px-4 py-2 rounded-lg text-xs font-bold transition-all cursor-pointer ${
+                  activeSyllabusVersion === 'New Syllabus'
+                    ? 'bg-indigo-600 text-white shadow-md'
+                    : 'text-slate-400 hover:text-slate-200 hover:bg-slate-800'
+                }`}
+              >
+                <Sparkles className="w-3.5 h-3.5" />
+                <span>New NEP Syllabus (Updated)</span>
+              </button>
+              <button
+                onClick={() => {
+                  setActiveSyllabusVersion('Old Syllabus');
+                  setActiveSubCategoryFilter('All');
+                }}
+                className={`flex-1 sm:flex-initial flex items-center justify-center space-x-1.5 px-4 py-2 rounded-lg text-xs font-bold transition-all cursor-pointer ${
+                  activeSyllabusVersion === 'Old Syllabus'
+                    ? 'bg-amber-600 text-white shadow-md'
+                    : 'text-slate-400 hover:text-slate-200 hover:bg-slate-800'
+                }`}
+              >
+                <BookOpen className="w-3.5 h-3.5" />
+                <span>Old NCERT Syllabus</span>
+              </button>
+            </div>
+          </div>
+        )}
+
         {/* Progress Bar */}
         <div className="mt-6">
           <div className="flex justify-between text-xs font-semibold text-slate-300 mb-1.5">
-            <span>Overall Progress</span>
+            <span>Overall Progress ({hasMultipleSyllabi ? activeSyllabusVersion : 'NCERT'})</span>
             <span>{percent}% Completed</span>
           </div>
           <div className="w-full bg-slate-900 rounded-full h-3 overflow-hidden border border-slate-700">
@@ -194,11 +250,11 @@ export const SubjectTracker: React.FC<SubjectTrackerProps> = ({
                 : 'text-slate-400 hover:text-slate-200 hover:bg-slate-800'
             }`}
           >
-            All Branches ({totalCh})
+            All Branches ({subjectSyllabusChapters.length})
           </button>
           {currentSubject.subCategories.map(subCat => {
-            const count = currentSubject.chapters.filter(c => c.subCategory === subCat).length;
-            const subCompleted = currentSubject.chapters.filter(c => c.subCategory === subCat && c.status === 'Completed').length;
+            const count = subjectSyllabusChapters.filter(c => c.subCategory === subCat).length;
+            const subCompleted = subjectSyllabusChapters.filter(c => c.subCategory === subCat && c.status === 'Completed').length;
             return (
               <button
                 key={subCat}
@@ -282,16 +338,27 @@ export const SubjectTracker: React.FC<SubjectTrackerProps> = ({
                     #{idx + 1}
                   </span>
                   <div>
-                    <div className="flex items-center space-x-2">
+                    <div className="flex items-center space-x-2 flex-wrap gap-y-1">
                       <h4 className={`font-semibold text-base group-hover:text-indigo-300 transition-colors ${chapter.status === 'Completed' ? 'text-emerald-200 line-through' : 'text-white'}`}>
                         {chapter.title}
                       </h4>
                     </div>
-                    {chapter.subCategory && (
-                      <span className="inline-block mt-1 text-[10px] font-bold uppercase tracking-wider px-2 py-0.5 rounded bg-slate-900 text-indigo-300 border border-slate-700/60">
-                        {chapter.subCategory}
-                      </span>
-                    )}
+                    <div className="flex items-center gap-2 mt-1">
+                      {chapter.subCategory && (
+                        <span className="inline-block text-[10px] font-bold uppercase tracking-wider px-2 py-0.5 rounded bg-slate-900 text-indigo-300 border border-slate-700/60">
+                          {chapter.subCategory}
+                        </span>
+                      )}
+                      {chapter.syllabusVersion && (
+                        <span className={`inline-block text-[10px] font-semibold px-2 py-0.5 rounded border ${
+                          chapter.syllabusVersion === 'New Syllabus'
+                            ? 'bg-indigo-950/80 text-indigo-300 border-indigo-800'
+                            : 'bg-amber-950/80 text-amber-300 border-amber-800'
+                        }`}>
+                          {chapter.syllabusVersion}
+                        </span>
+                      )}
+                    </div>
                   </div>
                 </div>
 

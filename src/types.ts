@@ -1,9 +1,11 @@
 export type ChapterStatus = 'Not Started' | 'In Progress' | 'Completed';
+export type SyllabusVersion = 'New Syllabus' | 'Old Syllabus';
 
 export interface Chapter {
   id: string;
   title: string;
   subCategory?: string; // e.g. "Physics", "Chemistry", "Biology" for Science; "History", "Geography", "Civics", "Economics" for SST; "Employability Skills", "Subject Specific Skills" for IT
+  syllabusVersion?: SyllabusVersion; // "New Syllabus" | "Old Syllabus"
   status: ChapterStatus;
   notes?: string;
 }

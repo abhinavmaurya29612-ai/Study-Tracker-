@@ -4,42 +4,81 @@ export const INITIAL_SUBJECTS: Subject[] = [
   {
     id: 'math',
     name: 'Mathematics',
-    title: 'Ganita Manjari',
+    title: 'Ganita Manjari / NCERT Math',
     icon: 'Calculator',
     color: '#3b82f6', // blue
     chapters: [
-      { id: 'math-1', title: 'Orienting Yourself: The Use of Coordinates', status: 'Not Started' },
-      { id: 'math-2', title: 'Introduction to Linear Polynomials', status: 'Not Started' },
-      { id: 'math-3', title: 'The World of Numbers', status: 'Not Started' },
-      { id: 'math-4', title: 'Exploring Algebraic Identities', status: 'Not Started' },
-      { id: 'math-5', title: "I'm Up and Down and Round and Round", status: 'Not Started' },
-      { id: 'math-6', title: 'Measuring Space: Perimeter and Area', status: 'Not Started' },
-      { id: 'math-7', title: 'The Mathematics of Maybe: Introduction to Probability', status: 'Not Started' },
-      { id: 'math-8', title: 'Predicting What Comes Next: Exploring Sequences and Progressions', status: 'Not Started' }
+      // New NEP Syllabus (Ganita Manjari)
+      { id: 'math-new-1', title: 'Orienting Yourself: The Use of Coordinates', syllabusVersion: 'New Syllabus', status: 'Not Started' },
+      { id: 'math-new-2', title: 'Introduction to Linear Polynomials', syllabusVersion: 'New Syllabus', status: 'Not Started' },
+      { id: 'math-new-3', title: 'The World of Numbers', syllabusVersion: 'New Syllabus', status: 'Not Started' },
+      { id: 'math-new-4', title: 'Exploring Algebraic Identities', syllabusVersion: 'New Syllabus', status: 'Not Started' },
+      { id: 'math-new-5', title: "I'm Up and Down and Round and Round", syllabusVersion: 'New Syllabus', status: 'Not Started' },
+      { id: 'math-new-6', title: 'Measuring Space: Perimeter and Area', syllabusVersion: 'New Syllabus', status: 'Not Started' },
+      { id: 'math-new-7', title: 'The Mathematics of Maybe: Introduction to Probability', syllabusVersion: 'New Syllabus', status: 'Not Started' },
+      { id: 'math-new-8', title: 'Predicting What Comes Next: Exploring Sequences and Progressions', syllabusVersion: 'New Syllabus', status: 'Not Started' },
+
+      // Old NCERT Syllabus (Classic Class 9 Math)
+      { id: 'math-old-1', title: 'Chapter 1: Number Systems', syllabusVersion: 'Old Syllabus', status: 'Not Started' },
+      { id: 'math-old-2', title: 'Chapter 2: Polynomials', syllabusVersion: 'Old Syllabus', status: 'Not Started' },
+      { id: 'math-old-3', title: 'Chapter 3: Coordinate Geometry', syllabusVersion: 'Old Syllabus', status: 'Not Started' },
+      { id: 'math-old-4', title: 'Chapter 4: Linear Equations in Two Variables', syllabusVersion: 'Old Syllabus', status: 'Not Started' },
+      { id: 'math-old-5', title: "Chapter 5: Introduction to Euclid's Geometry", syllabusVersion: 'Old Syllabus', status: 'Not Started' },
+      { id: 'math-old-6', title: 'Chapter 6: Lines and Angles', syllabusVersion: 'Old Syllabus', status: 'Not Started' },
+      { id: 'math-old-7', title: 'Chapter 7: Triangles', syllabusVersion: 'Old Syllabus', status: 'Not Started' },
+      { id: 'math-old-8', title: 'Chapter 8: Quadrilaterals', syllabusVersion: 'Old Syllabus', status: 'Not Started' },
+      { id: 'math-old-9', title: 'Chapter 9: Areas of Parallelograms and Triangles', syllabusVersion: 'Old Syllabus', status: 'Not Started' },
+      { id: 'math-old-10', title: 'Chapter 10: Circles', syllabusVersion: 'Old Syllabus', status: 'Not Started' },
+      { id: 'math-old-11', title: 'Chapter 11: Constructions', syllabusVersion: 'Old Syllabus', status: 'Not Started' },
+      { id: 'math-old-12', title: "Chapter 12: Heron's Formula", syllabusVersion: 'Old Syllabus', status: 'Not Started' },
+      { id: 'math-old-13', title: 'Chapter 13: Surface Areas and Volumes', syllabusVersion: 'Old Syllabus', status: 'Not Started' },
+      { id: 'math-old-14', title: 'Chapter 14: Statistics', syllabusVersion: 'Old Syllabus', status: 'Not Started' },
+      { id: 'math-old-15', title: 'Chapter 15: Probability', syllabusVersion: 'Old Syllabus', status: 'Not Started' }
     ]
   },
   {
     id: 'science',
     name: 'Science',
-    title: 'Exploration',
+    title: 'Exploration / NCERT Science',
     icon: 'FlaskConical',
     color: '#10b981', // emerald
     subCategories: ['Physics', 'Chemistry', 'Biology'],
     chapters: [
-      // Physics
-      { id: 'sci-1', title: 'Describing Motion Around Us', subCategory: 'Physics', status: 'Not Started' },
-      { id: 'sci-2', title: 'How Forces Affect Motion', subCategory: 'Physics', status: 'Not Started' },
-      { id: 'sci-3', title: 'Work, Energy and Simple Machines', subCategory: 'Physics', status: 'Not Started' },
-      { id: 'sci-4', title: 'Sound Waves: Characteristics & Applications', subCategory: 'Physics', status: 'Not Started' },
-      // Chemistry
-      { id: 'sci-5', title: 'Exploring Mixtures & Their Separation', subCategory: 'Chemistry', status: 'Not Started' },
-      { id: 'sci-6', title: 'Journey Inside the Atom', subCategory: 'Chemistry', status: 'Not Started' },
-      { id: 'sci-7', title: 'Atomic Foundations of Matter', subCategory: 'Chemistry', status: 'Not Started' },
-      // Biology
-      { id: 'sci-8', title: 'Cell: The Building Blocks of Life', subCategory: 'Biology', status: 'Not Started' },
-      { id: 'sci-9', title: 'Tissues in Action', subCategory: 'Biology', status: 'Not Started' },
-      { id: 'sci-10', title: 'Life Processes & Reproduction', subCategory: 'Biology', status: 'Not Started' },
-      { id: 'sci-11', title: 'Diversity and Classification', subCategory: 'Biology', status: 'Not Started' }
+      // --- NEW NEP SYLLABUS ---
+      // Physics (New)
+      { id: 'sci-new-1', title: 'Describing Motion Around Us', subCategory: 'Physics', syllabusVersion: 'New Syllabus', status: 'Not Started' },
+      { id: 'sci-new-2', title: 'How Forces Affect Motion', subCategory: 'Physics', syllabusVersion: 'New Syllabus', status: 'Not Started' },
+      { id: 'sci-new-3', title: 'Work, Energy and Simple Machines', subCategory: 'Physics', syllabusVersion: 'New Syllabus', status: 'Not Started' },
+      { id: 'sci-new-4', title: 'Sound Waves: Characteristics & Applications', subCategory: 'Physics', syllabusVersion: 'New Syllabus', status: 'Not Started' },
+      // Chemistry (New)
+      { id: 'sci-new-5', title: 'Exploring Mixtures & Their Separation', subCategory: 'Chemistry', syllabusVersion: 'New Syllabus', status: 'Not Started' },
+      { id: 'sci-new-6', title: 'Journey Inside the Atom', subCategory: 'Chemistry', syllabusVersion: 'New Syllabus', status: 'Not Started' },
+      { id: 'sci-new-7', title: 'Atomic Foundations of Matter', subCategory: 'Chemistry', syllabusVersion: 'New Syllabus', status: 'Not Started' },
+      // Biology (New)
+      { id: 'sci-new-8', title: 'Cell: The Building Blocks of Life', subCategory: 'Biology', syllabusVersion: 'New Syllabus', status: 'Not Started' },
+      { id: 'sci-new-9', title: 'Tissues in Action', subCategory: 'Biology', syllabusVersion: 'New Syllabus', status: 'Not Started' },
+      { id: 'sci-new-10', title: 'Life Processes & Reproduction', subCategory: 'Biology', syllabusVersion: 'New Syllabus', status: 'Not Started' },
+      { id: 'sci-new-11', title: 'Diversity and Classification', subCategory: 'Biology', syllabusVersion: 'New Syllabus', status: 'Not Started' },
+
+      // --- OLD NCERT SYLLABUS ---
+      // Chemistry (Old)
+      { id: 'sci-old-1', title: 'Chapter 1: Matter in Our Surroundings', subCategory: 'Chemistry', syllabusVersion: 'Old Syllabus', status: 'Not Started' },
+      { id: 'sci-old-2', title: 'Chapter 2: Is Matter Around Us Pure?', subCategory: 'Chemistry', syllabusVersion: 'Old Syllabus', status: 'Not Started' },
+      { id: 'sci-old-3', title: 'Chapter 3: Atoms and Molecules', subCategory: 'Chemistry', syllabusVersion: 'Old Syllabus', status: 'Not Started' },
+      { id: 'sci-old-4', title: 'Chapter 4: Structure of the Atom', subCategory: 'Chemistry', syllabusVersion: 'Old Syllabus', status: 'Not Started' },
+      // Biology (Old)
+      { id: 'sci-old-5', title: 'Chapter 5: The Fundamental Unit of Life', subCategory: 'Biology', syllabusVersion: 'Old Syllabus', status: 'Not Started' },
+      { id: 'sci-old-6', title: 'Chapter 6: Tissues', subCategory: 'Biology', syllabusVersion: 'Old Syllabus', status: 'Not Started' },
+      { id: 'sci-old-7', title: 'Chapter 7: Diversity in Living Organisms', subCategory: 'Biology', syllabusVersion: 'Old Syllabus', status: 'Not Started' },
+      { id: 'sci-old-8', title: 'Chapter 13: Why Do We Fall Ill?', subCategory: 'Biology', syllabusVersion: 'Old Syllabus', status: 'Not Started' },
+      { id: 'sci-old-9', title: 'Chapter 14: Natural Resources', subCategory: 'Biology', syllabusVersion: 'Old Syllabus', status: 'Not Started' },
+      { id: 'sci-old-10', title: 'Chapter 15: Improvement in Food Resources', subCategory: 'Biology', syllabusVersion: 'Old Syllabus', status: 'Not Started' },
+      // Physics (Old)
+      { id: 'sci-old-11', title: 'Chapter 8: Motion', subCategory: 'Physics', syllabusVersion: 'Old Syllabus', status: 'Not Started' },
+      { id: 'sci-old-12', title: 'Chapter 9: Force and Laws of Motion', subCategory: 'Physics', syllabusVersion: 'Old Syllabus', status: 'Not Started' },
+      { id: 'sci-old-13', title: 'Chapter 10: Gravitation', subCategory: 'Physics', syllabusVersion: 'Old Syllabus', status: 'Not Started' },
+      { id: 'sci-old-14', title: 'Chapter 11: Work and Energy', subCategory: 'Physics', syllabusVersion: 'Old Syllabus', status: 'Not Started' },
+      { id: 'sci-old-15', title: 'Chapter 12: Sound', subCategory: 'Physics', syllabusVersion: 'Old Syllabus', status: 'Not Started' }
     ]
   },
   {
@@ -104,7 +143,7 @@ export const INITIAL_SUBJECTS: Subject[] = [
       { id: 'hin-9', title: 'अध्याय 9: राम-लक्ष्मण-परशुराम संवाद (तुलसीदास)', subCategory: 'काव्य खंड', status: 'Not Started' },
       { id: 'hin-10', title: 'अध्याय 10: भारती, जय, विजयकरे! (सूर्यकांत त्रिपाठी \'निराला\')', subCategory: 'काव्य खंड', status: 'Not Started' },
       { id: 'hin-11', title: 'अध्याय 11: झाँसी की रानी (सुभद्रा कुमारी चौहान)', subCategory: 'काव्य खंड', status: 'Not Started' },
-      { id: 'hin-12', title: 'अध्याय 12: घर की याद (भवानीप्रсад मिश्र)', subCategory: 'काव्य खंड', status: 'Not Started' }
+      { id: 'hin-12', title: 'अध्याय 12: घर की याद (भवानीप्रसाद मिश्र)', subCategory: 'काव्य खंड', status: 'Not Started' }
     ]
   },
   {
